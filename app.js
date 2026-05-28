@@ -4,13 +4,41 @@ const contentInput = document.getElementById('content');
 const saveBtn = document.getElementById('saveBtn');
 const searchInput = document.getElementById('search');
 const themeToggle = document.getElementById('themeToggle');
+const loginBtn = document.getElementById('loginBtn');
 
-let notes = JSON.parse(localStorage.getItem('notes')) || [];
+const authSection = document.getElementById('authSection');
+const appSection = document.getElementById('appSection');
+
+let notes = [];
 let editId = null;
+let currentUser = null;
+
+function getKey(username, password) {
+  return btoa(username + ':' + password);
+}
+
+function loadNotes() {
+  notes = JSON.parse(localStorage.getItem(currentUser) || '[]');
+}
 
 function saveNotes() {
-  localStorage.setItem('notes', JSON.stringify(notes));
+  localStorage.setItem(currentUser, JSON.stringify(notes));
 }
+
+loginBtn.addEventListener('click', () => {
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value.trim();
+
+  if (!username || !password) return;
+
+  currentUser = getKey(username, password);
+
+  loadNotes();
+  renderNotes();
+
+  authSection.style.display = 'none';
+  appSection.style.display = 'block';
+});
 
 function renderNotes(filter = '') {
   notesContainer.innerHTML = '';
@@ -46,9 +74,7 @@ saveBtn.addEventListener('click', () => {
 
   if (editId) {
     notes = notes.map(note =>
-      note.id === editId
-        ? { ...note, title, content }
-        : note
+      note.id === editId ? { ...note, title, content } : note
     );
 
     editId = null;
@@ -100,16 +126,12 @@ function loadTheme() {
 function toggleTheme() {
   document.body.classList.toggle('dark');
 
-  localStorage.setItem(
-    'darkMode',
-    document.body.classList.contains('dark')
-  );
+  localStorage.setItem('darkMode', document.body.classList.contains('dark'));
 }
 
 themeToggle.addEventListener('click', toggleTheme);
 
 loadTheme();
-renderNotes();
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js')
