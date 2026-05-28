@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notiz-App</title>
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #111827;
+      --accent: #2563eb;
+      --border: #dbe3ee;
+    }
+
+    body.dark {
+      --bg: #0f172a;
+      --card: #111827;
+      --text: #f8fafc;
+      --accent: #3b82f6;
+      --border: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      transition: 0.3s;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .form {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .notes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .note {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 16px;
+      border-radius: 16px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .note h3 {
+      margin-bottom: 10px;
+    }
+
+    .note p {
+      white-space: pre-wrap;
+      margin-bottom: 15px;
+    }
+
+    .note small {
+      display: block;
+      margin-bottom: 12px;
+      opacity: 0.7;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .search {
+      margin-bottom: 20px;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <h1>📝 Notiz-App</h1>
+      <button id="themeToggle">Dark Mode</button>
+    </div>
+
+    <div class="form">
+      <input type="text" id="title" placeholder="Titel" />
+      <textarea id="content" placeholder="Deine Notiz..."></textarea>
+      <button id="saveBtn">Notiz speichern</button>
+    </div>
+
+    <input class="search" type="text" id="search" placeholder="Notizen durchsuchen..." />
+
+    <div class="notes" id="notes"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
